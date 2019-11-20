@@ -84,7 +84,21 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\Pat\Downloads\Corsair-SDK- Lighting Effects-v2.0.57\LFX\include;C:\Users\Pat\Downloads\Corsair-SDK- Lighting Effects-v2.0.57\CUESDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>C:\Users\Pat\Downloads\Corsair-SDK- Lighting Effects-v2.0.57\LFX\lib\$(PlatfromTarget);C:\Users\Pat\Downloads\Corsair-SDK- Lighting Effects-v2.0.57\CUESDK\lib\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>CUELFX.x64_2013.lib;CorsairLFX.x64_2013.lib;CorsairLayers.x64_2013.lib;CUESDK.x64_2013.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy  /Y /I  "C:\Users\Pat\Downloads\Corsair-SDK- Lighting Effects-v2.0.57\LFX\bin\$(PlatformTarget)\CUELFX.x64_2013.dll" "$(OutDir)"
+xcopy  /Y /I  "C:\Users\Pat\Downloads\Corsair-SDK- Lighting Effects-v2.0.57\LFX\bin\$(PlatformTarget)\CorsairLFX.x64_2013.dll" "$(OutDir)"
+xcopy  /Y /I  "C:\Users\Pat\Downloads\Corsair-SDK- Lighting Effects-v2.0.57\LFX\bin\$(PlatformTarget)\CorsairLayers.x64_2013.dll" "$(OutDir)"
+xcopy  /Y /I  "C:\Users\Pat\Downloads\Corsair-SDK- Lighting Effects-v2.0.57\CUESDK\bin\$(PlatformTarget)\CUESDK.x64_2013.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -108,11 +122,23 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\Pat\Downloads\Corsair-SDK- Lighting Effects-v2.0.57\LFX\include;C:\Users\Pat\Downloads\Corsair-SDK- Lighting Effects-v2.0.57\CUESDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>C:\Users\Pat\Downloads\Corsair-SDK- Lighting Effects-v2.0.57\LFX\lib\$(PlatfromTarget);C:\Users\Pat\Downloads\Corsair-SDK- Lighting Effects-v2.0.57\CUESDK\lib\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>CUELFX.x64_2013.lib;CorsairLFX.x64_2013.lib;CorsairLayers.x64_2013.lib;CUESDK.x64_2013.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy  /Y /I  "C:\Users\Pat\Downloads\Corsair-SDK- Lighting Effects-v2.0.57\LFX\bin\$(PlatformTarget)\CUELFX.x64_2013.dll" "$(OutDir)"
+xcopy  /Y /I  "C:\Users\Pat\Downloads\Corsair-SDK- Lighting Effects-v2.0.57\LFX\bin\$(PlatformTarget)\CorsairLFX.x64_2013.dll" "$(OutDir)"
+xcopy  /Y /I  "C:\Users\Pat\Downloads\Corsair-SDK- Lighting Effects-v2.0.57\LFX\bin\$(PlatformTarget)\CorsairLayers.x64_2013.dll" "$(OutDir)"
+xcopy  /Y /I  "C:\Users\Pat\Downloads\Corsair-SDK- Lighting Effects-v2.0.57\CUESDK\bin\$(PlatformTarget)\CUESDK.x64_2013.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="color_pulse.cpp" />
