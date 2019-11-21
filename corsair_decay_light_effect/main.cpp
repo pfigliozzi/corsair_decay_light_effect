@@ -36,17 +36,9 @@ const char* errorString(CorsairError error)
 std::vector<CorsairLedId> getLeds()
 {
 	std::vector<CorsairLedId> leds;
-	for (int i = CLK_GraveAccentAndTilde; i <= CLK_Application; ++i) {
+	for (int i = CLK_Escape; i <= CLK_Fn; ++i) {
 		leds.push_back(static_cast<CorsairLedId>(i));
 	}
-	
-	for (int i = CLK_BracketRight; i <= CLK_Backspace; ++i) {
-		leds.push_back(static_cast<CorsairLedId>(i));
-	}
-
-	leds.push_back(CLK_RightShift);
-	leds.push_back(CLK_RightCtrl);
-	leds.push_back(CLK_Fn);
 
 	return leds;
 }
