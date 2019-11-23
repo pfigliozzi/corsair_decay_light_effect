@@ -10,6 +10,7 @@
 #include <vector>
 #include <thread>
 #include <tuple>
+#include <conio.h>
 
 using Clock = std::chrono::steady_clock;
 
@@ -146,16 +147,21 @@ int main(int argc, char *argv[])
 	auto leds = getLeds();
 	auto params = getEffectParams();
 
-	auto effect = CUELFXCreateSpiralRainbowEffect(static_cast<int>(leds.size()), leds.data(), std::get<0>(params), std::get<1>(params));
+	std::cout << "Play first effect with black-color center\nPress any key to play next step...\n";
+	auto base_effect = CUELFXCreateSolidColorEffect(leds.size(), leds.data(), { 255, 255, 0 });
+	auto effect1Id = CorsairLayersPlayEffect(base_effect, 1);
+	_getch();
 
-	if (!effect) {
+	//auto effect = CUELFXCreateSpiralRainbowEffect(static_cast<int>(leds.size()), leds.data(), std::get<0>(params), std::get<1>(params));
+
+	/*if (!effect) {
 		std::cerr << "Failed to create Spiral Rainbow Effect" << std::endl;
 		system("pause");
 		return -1;
 	}
-	
+	*/
 	std::cout << "Playing effect...\nPress Escape to stop playback\n";
-	playEffect(effect);
+	/*playEffect(effect);*/
 	system("pause");
 	return 0;
 }
