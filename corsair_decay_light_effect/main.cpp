@@ -44,77 +44,6 @@ std::vector<CorsairLedId> getLeds()
 	return leds;
 }
 
-void playEffect(CorsairEffect *effect)
-{
-	auto startPoint = Clock::now();
-
-	while (!GetAsyncKeyState(VK_ESCAPE)) {
-		
-		auto offset = std::chrono::duration_cast<std::chrono::milliseconds>(Clock::now() - startPoint).count();
-		auto frame = CUELFXGetFrame(effect->effectId, static_cast<int>(offset));
-		
-		if (frame && frame->ledsColors) {
-			auto res = CorsairSetLedsColors(frame->size, frame->ledsColors);
-			CUELFXFreeFrame(frame);
-
-			if (!res) {
-				std::cerr << "Failed to set led colors: " << errorString(CorsairGetLastError()) << std::endl;
-				return;
-			}
-		}
-		std::this_thread::sleep_for(std::chrono::milliseconds(25));
-	}
-}
-
-std::tuple<CorsairLightingEffectSpeed, CorsairLightingEffectCircularDirection> getEffectParams()
-{
-	CorsairLightingEffectSpeed speed = CLES_Medium;
-	CorsairLightingEffectCircularDirection direction = CLECD_Clockwise;
-
-	int inputParam = 0;
-	std::cout << "Input effect speed (0 - Slow, 1 - Medium(default), 2 - Fast): ";
-	std::cin >> inputParam;
-	
-	if (std::cin.fail()) {
-		std::cin.clear();
-		std::cin.ignore();
-		inputParam = -1;
-	}
-
-	switch (inputParam) {
-	case 0:
-		speed = CLES_Slow;
-		break;
-	default:
-		std::cout << "Use default speed\n";
-	case 1:
-		break;
-	case 2:
-		speed = CLES_Fast;
-		break;
-	}
-
-	std::cout << "Input effect direction (0 - Clockwise(default), 1 - CounterClockwise): ";
-	std::cin >> inputParam;
-
-	if (std::cin.fail()) {
-		std::cin.clear();
-		std::cin.ignore();
-		inputParam = -1;
-	}
-
-	switch (inputParam) {
-	default:
-		std::cout << "Use default direction\n";
-	case 0:
-		break;
-	case 1:
-		direction = CLECD_CounterClockwise;
-		break;
-	}
-
-	return std::make_tuple(speed, direction);
-}
 
 int main(int argc, char *argv[])
 {
@@ -145,23 +74,13 @@ int main(int argc, char *argv[])
 	CorsairLayersInitialize(&CorsairSetLedsColorsAsync);
 
 	auto leds = getLeds();
-	auto params = getEffectParams();
 
 	std::cout << "Play first effect with black-color center\nPress any key to play next step...\n";
 	auto base_effect = CUELFXCreateSolidColorEffect(leds.size(), leds.data(), { 255, 255, 0 });
 	auto effect1Id = CorsairLayersPlayEffect(base_effect, 1);
 	_getch();
 
-	//auto effect = CUELFXCreateSpiralRainbowEffect(static_cast<int>(leds.size()), leds.data(), std::get<0>(params), std::get<1>(params));
-
-	/*if (!effect) {
-		std::cerr << "Failed to create Spiral Rainbow Effect" << std::endl;
-		system("pause");
-		return -1;
-	}
-	*/
 	std::cout << "Playing effect...\nPress Escape to stop playback\n";
-	/*playEffect(effect);*/
 	system("pause");
 	return 0;
 }
