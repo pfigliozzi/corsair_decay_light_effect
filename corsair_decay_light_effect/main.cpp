@@ -44,6 +44,71 @@ std::vector<CorsairLedId> getLeds()
 	return leds;
 }
 
+CorsairFrame* getFrameFunc(Guid effectId, int offset);
+void freeFrameFunc(CorsairFrame *frame);
+
+class Effect
+{
+public:
+
+	explicit Effect(const std::vector<CorsairLedColor>& colors)
+		: effectId(0), mColors(colors), stopEffect(false)
+	{
+	}
+
+	virtual ~Effect() {}
+
+	CorsairEffect* effect()
+	{
+		if (!mEffect) {
+			mEffect = std::unique_ptr<CorsairEffect>(new CorsairEffect);
+			mEffect->effectId = reinterpret_cast<Guid>(this);
+			effectId = mEffect->effectId;
+			mEffect->getFrameFunction = getFrameFunc;
+			mEffect->freeFrameFunction = freeFrameFunc;
+		}
+		return mEffect.get();
+	}
+
+	virtual CorsairFrame* getFrame(Guid effectId, int offset)
+	{
+		if (reinterpret_cast<Effect*>(effectId) != this || stopEffect) {
+			return nullptr;
+		}
+		else {
+			CorsairFrame *frame = new CorsairFrame;
+			frame->size = static_cast<int>(mColors.size());
+			frame->ledsColors = new CorsairLedColor[mColors.size()];
+			std::copy(mColors.begin(), mColors.end(), frame->ledsColors);
+			return frame;
+		}
+	}
+
+	Guid effectId;
+	bool stopEffect;
+
+private:
+	std::vector<CorsairLedColor> mColors;
+	std::unique_ptr<CorsairEffect> mEffect;
+};
+
+CorsairFrame* getFrameFunc(Guid effectId, int offset)
+{
+	if (effectId) {
+		return reinterpret_cast<Effect*>(effectId)->getFrame(effectId, offset);
+	}
+	else {
+		return nullptr;
+	}
+}
+
+void freeFrameFunc(CorsairFrame *frame)
+{
+	if (frame) {
+		delete[] frame->ledsColors;
+		delete frame;
+	}
+}
 
 int main(int argc, char *argv[])
 {
