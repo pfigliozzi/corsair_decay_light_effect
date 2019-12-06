@@ -44,6 +44,16 @@ std::vector<CorsairLedId> getLeds()
 	return leds;
 }
 
+std::vector<CorsairLedId> getSubsetLeds()
+{
+	std::vector<CorsairLedId> leds;
+	for (int i = CLK_Escape; i <= CLK_RightAlt; ++i) {
+		leds.push_back(static_cast<CorsairLedId>(i));
+	}
+
+	return leds;
+}
+
 CorsairFrame* getFrameFunc(Guid effectId, int offset);
 void freeFrameFunc(CorsairFrame *frame);
 
@@ -139,10 +149,15 @@ int main(int argc, char *argv[])
 	CorsairLayersInitialize(&CorsairSetLedsColorsAsync);
 
 	auto leds = getLeds();
+	auto leds_subset = getSubsetLeds();
+
 
 	std::cout << "Play first effect with black-color center\nPress any key to play next step...\n";
 	auto base_effect = CUELFXCreateSolidColorEffect(leds.size(), leds.data(), { 255, 255, 0 });
 	auto effect1Id = CorsairLayersPlayEffect(base_effect, 1);
+
+	auto base_effect_2 = CUELFXCreateSolidColorEffect(leds_subset.size(), leds_subset.data(), { 255, 255, 225 });
+	auto effect2Id = CorsairLayersPlayEffect(base_effect_2, 2);
 	_getch();
 
 	std::cout << "Playing effect...\nPress Escape to stop playback\n";
