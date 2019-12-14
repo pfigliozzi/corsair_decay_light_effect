@@ -85,7 +85,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\Pat\Downloads\LFX_3.1.289\LFX\include;C:\Users\Pat\Downloads\CUESDK_3.0.301\CUESDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;CORSAIR_LIGHTING_SDK_DISABLE_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>C:\Users\Pat\Downloads\LFX_3.1.289\LFX\lib\$(PlatformTarget);C:\Users\Pat\Downloads\CUESDK_3.0.301\CUESDK\lib\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -94,10 +94,8 @@
       <SubSystem>Console</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy  /Y /I  "C:\Users\Pat\Downloads\LFX_3.1.289\LFX\bin\$(PlatformTarget)\CUELFX.x64_2013.dll" "$(OutDir)"
-xcopy  /Y /I  "C:\Users\Pat\Downloads\LFX_3.1.289\LFX\bin\$(PlatformTarget)\CorsairLFX.x64_2013.dll" "$(OutDir)"
-xcopy  /Y /I  "C:\Users\Pat\Downloads\LFX_3.1.289\LFX\bin\$(PlatformTarget)\CorsairLayers.x64_2013.dll" "$(OutDir)"
-xcopy  /Y /I  "C:\Users\Pat\Downloads\CUESDK_3.0.301\CUESDK\bin\$(PlatformTarget)\CUESDK.x64_2013.dll" "$(OutDir)"</Command>
+      <Command>xcopy  /Y /I  "C:\Users\Pat\Downloads\LFX_3.1.289\LFX\redist\$(PlatformTarget)\*" "$(OutDir)"
+xcopy  /Y /I  "C:\Users\Pat\Downloads\CUESDK_3.0.301\CUESDK\redist\$(PlatformTarget)\*" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -123,7 +121,7 @@ xcopy  /Y /I  "C:\Users\Pat\Downloads\CUESDK_3.0.301\CUESDK\bin\$(PlatformTarget
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\Pat\Downloads\LFX_3.1.289\LFX\include;C:\Users\Pat\Downloads\CUESDK_3.0.301\CUESDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;CORSAIR_LIGHTING_SDK_DISABLE_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -134,10 +132,8 @@ xcopy  /Y /I  "C:\Users\Pat\Downloads\CUESDK_3.0.301\CUESDK\bin\$(PlatformTarget
       <SubSystem>Console</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy  /Y /I  "C:\Users\Pat\Downloads\LFX_3.1.289\LFX\bin\$(PlatformTarget)\CUELFX.x64_2013.dll" "$(OutDir)"
-xcopy  /Y /I  "C:\Users\Pat\Downloads\LFX_3.1.289\LFX\bin\$(PlatformTarget)\CorsairLFX.x64_2013.dll" "$(OutDir)"
-xcopy  /Y /I  "C:\Users\Pat\Downloads\LFX_3.1.289\LFX\bin\$(PlatformTarget)\CorsairLayers.x64_2013.dll" "$(OutDir)"
-xcopy  /Y /I  "C:\Users\Pat\Downloads\CUESDK_3.0.301\CUESDK\bin\$(PlatformTarget)\CUESDK.x64_2013.dll" "$(OutDir)"</Command>
+      <Command>xcopy  /Y /I  "C:\Users\Pat\Downloads\LFX_3.1.289\LFX\redist\$(PlatformTarget)\*" "$(OutDir)"
+xcopy  /Y /I  "C:\Users\Pat\Downloads\CUESDK_3.0.301\CUESDK\redist\$(PlatformTarget)\*" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
