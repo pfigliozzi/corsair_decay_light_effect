@@ -91,7 +91,9 @@
       <AdditionalLibraryDirectories>C:\Users\Pat\Downloads\LFX_3.1.289\LFX\lib\$(PlatformTarget);C:\Users\Pat\Downloads\CUESDK_3.0.301\CUESDK\lib\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>CUELFX.x64_2013.lib;CorsairLFX.x64_2013.lib;CorsairLayers.x64_2013.lib;CUESDK.x64_2013.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
     </Link>
     <PostBuildEvent>
       <Command>xcopy  /Y /I  "C:\Users\Pat\Downloads\LFX_3.1.289\LFX\redist\$(PlatformTarget)\*" "$(OutDir)"
@@ -129,7 +131,9 @@ xcopy  /Y /I  "C:\Users\Pat\Downloads\CUESDK_3.0.301\CUESDK\redist\$(PlatformTar
       <AdditionalLibraryDirectories>C:\Users\Pat\Downloads\LFX_3.1.289\LFX\lib\$(PlatformTarget);C:\Users\Pat\Downloads\CUESDK_3.0.301\CUESDK\lib\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>CUELFX.x64_2013.lib;CorsairLFX.x64_2013.lib;CorsairLayers.x64_2013.lib;CUESDK.x64_2013.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
     </Link>
     <PostBuildEvent>
       <Command>xcopy  /Y /I  "C:\Users\Pat\Downloads\LFX_3.1.289\LFX\redist\$(PlatformTarget)\*" "$(OutDir)"
@@ -139,6 +143,9 @@ xcopy  /Y /I  "C:\Users\Pat\Downloads\CUESDK_3.0.301\CUESDK\redist\$(PlatformTar
   <ItemGroup>
     <ClCompile Include="color_pulse.cpp" />
     <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\Notes.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

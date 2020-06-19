@@ -195,20 +195,6 @@ void SetHook()
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	SetHook();
-	MSG msg;
-	while (GetMessage(&msg, NULL, 0, 0))
-	{
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
-	}
-	return msg.wParam;
-}
-
-//* STUFF I DON'T UNDERSTAND
-
-int main(int argc, char *argv[])
-{
 	// Standard Keyboard setup stuff.
 	CorsairPerformProtocolHandshake();
 	if (const auto error = CorsairGetLastError()) {
@@ -216,7 +202,7 @@ int main(int argc, char *argv[])
 		system("pause");
 		return -1;
 	}
-	
+
 	const int deviceIndex = keyboardIndex();
 	if (deviceIndex < 0) {
 		std::cerr << "Unable to find keyboard index" << std::endl;
@@ -238,25 +224,83 @@ int main(int argc, char *argv[])
 
 	// First Layer of LEDs
 	const std::vector<CorsairLedPosition> firstGroupOfLeds = getKeyboardLeds(0, keyboardWidth * 0.33, *ledPositions);
-	auto solidColor = CUELFXCreateSolidColorEffect({ 50, 150, 200 });
+	auto solidColor = CUELFXCreateSolidColorEffect({ 200, 0, 0 });
 	CUELFXAssignEffectToLeds(solidColor->effectId, deviceIndex, firstGroupOfLeds.size(), firstGroupOfLeds.data());
 
 	std::cout << "Play SolidColor effect on layer 5\nPress any key to play next step...\n";
 	auto solidColorId = CorsairLayersPlayEffect(solidColor, 1);
-
-
-	// Second Layer of LEDs
-
-	const std::vector<CorsairLedPosition> secondGroupOfLeds = getKeyboardLeds(keyboardWidth * 0.33, keyboardWidth * 0.66, *ledPositions);
-
-	auto solidColor2 = CUELFXCreateSolidColorEffect({ 255, 255, 225 });
-	CUELFXAssignEffectToLeds(solidColor2->effectId, deviceIndex, secondGroupOfLeds.size(), secondGroupOfLeds.data());
-
-	auto solidColorId2 = CorsairLayersPlayEffect(solidColor2, 2);
-	_getch();
-
-	std::cout << "Playing effect...\nPress Escape to stop playback\n";
-
-	system("pause");
-	return 0;
+	
+	SetHook();
+	MSG msg;
+	while (GetMessage(&msg, NULL, 0, 0))
+	{
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+	return msg.wParam;
 }
+
+//* STUFF I DON'T UNDERSTAND
+
+//int main(int argc, char *argv[])
+//{
+//	// Standard Keyboard setup stuff.
+//	CorsairPerformProtocolHandshake();
+//	if (const auto error = CorsairGetLastError()) {
+//		std::cerr << "Protocol Handshake failed: " << errorString(error) << std::endl;
+//		system("pause");
+//		return -1;
+//	}
+//	
+//	const int deviceIndex = keyboardIndex();
+//	if (deviceIndex < 0) {
+//		std::cerr << "Unable to find keyboard index" << std::endl;
+//		system("pause");
+//		return -1;
+//	}
+//
+//	const auto ledPositions = CorsairGetLedPositionsByDeviceIndex(deviceIndex);
+//	if (!ledPositions) {
+//		std::cerr << "No led positions available" << std::endl;
+//		system("pause");
+//		return -1;
+//	}
+//
+//	CorsairLayersInitialize(&CorsairSetLedsColorsBufferByDeviceIndex, &CorsairSetLedsColorsFlushBufferAsync);
+//
+//	const auto keyboardWidth = getKeyboardWidth(*ledPositions);
+//	CorsairLayersInitialize(&CorsairSetLedsColorsBufferByDeviceIndex, &CorsairSetLedsColorsFlushBufferAsync);
+//
+//	// First Layer of LEDs
+//	const std::vector<CorsairLedPosition> firstGroupOfLeds = getKeyboardLeds(0, keyboardWidth * 0.33, *ledPositions);
+//	auto solidColor = CUELFXCreateSolidColorEffect({ 200, 0, 0 });
+//	CUELFXAssignEffectToLeds(solidColor->effectId, deviceIndex, firstGroupOfLeds.size(), firstGroupOfLeds.data());
+//
+//	std::cout << "Play SolidColor effect on layer 5\nPress any key to play next step...\n";
+//	auto solidColorId = CorsairLayersPlayEffect(solidColor, 1);
+//
+//
+//	//// Second Layer of LEDs
+//
+//	//const std::vector<CorsairLedPosition> secondGroupOfLeds = getKeyboardLeds(keyboardWidth * 0.33, keyboardWidth * 0.66, *ledPositions);
+//
+//	//auto solidColor2 = CUELFXCreateSolidColorEffect({ 255, 255, 225 });
+//	//CUELFXAssignEffectToLeds(solidColor2->effectId, deviceIndex, secondGroupOfLeds.size(), secondGroupOfLeds.data());
+//
+//	//auto solidColorId2 = CorsairLayersPlayEffect(solidColor2, 2);
+//	//_getch();
+//
+//	//std::cout << "Playing effect...\nPress Escape to stop playback\n";
+//
+//	//system("pause");
+//	WinMain();
+//
+//	while (true) {
+//		char c = getchar();
+//		if (c == 'q' || c == 'Q') {
+//			break;
+//		}
+//	}
+//
+//	return 0;
+//}
