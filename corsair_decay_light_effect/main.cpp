@@ -5,6 +5,7 @@
 #include "CorsairLayers/CorsairLayers.h"
 
 #include <Windows.h>
+#include <WinUser.h>
 
 #include <iostream>
 #include <vector>
@@ -152,8 +153,63 @@ int getKeyboardWidth(const CorsairLedPositions &positions)
 	return keyboardSize;
 }
 
+// The actual function that will change the color of the Led.
+void changeKeyboardLed(char character, int deviceIndex)
+{
+	auto ledId = CorsairGetLedIdForKeyName(character);
+	auto solidColor = CUELFXCreateSolidColorEffect({ 50, 150, 200 });
+	std::vector<CorsairLedPosition> leds;
+	auto mapping = CorsairGetLedPositionsByDeviceIndex(deviceIndex); // Returns a dictionary (structure?) where LedIds can lookup Positions.
+	leds.push_back(mapping->pLedPosition[ledId]);
+	CUELFXAssignEffectToLeds(solidColor->effectId, deviceIndex, 1, leds.data());
+	auto solidColorId = CorsairLayersPlayEffect(solidColor, 1);
+
+}
+
+HHOOK _hook_keyboard;
+KBDLLHOOKSTRUCT kbdStruct;
+
+// The callback function.
+LRESULT __stdcall HookCallbackKeyboard(int nCode, WPARAM wParam, LPARAM lParam)
+{
+	if (nCode >= 0)
+	{
+		kbdStruct = *((KBDLLHOOKSTRUCT*)lParam);
+		if (wParam == WM_KEYDOWN) {
+			char c = MapVirtualKey(kbdStruct.vkCode, 2);
+			changeKeyboardLed(c, 0);
+
+
+		}
+	}
+	return CallNextHookEx(_hook_keyboard, nCode, wParam, lParam);
+}
+//* STUFF I DON'T UNDERSTAND
+void SetHook()
+{
+	if (!(_hook_keyboard = SetWindowsHookEx(WH_KEYBOARD_LL, HookCallbackKeyboard, NULL, 0)))
+	{
+		MessageBox(NULL, "Failed to install hook on keyboard!", "Error", MB_ICONERROR);
+	}
+}
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+{
+	SetHook();
+	MSG msg;
+	while (GetMessage(&msg, NULL, 0, 0))
+	{
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+	return msg.wParam;
+}
+
+//* STUFF I DON'T UNDERSTAND
+
 int main(int argc, char *argv[])
 {
+	// Standard Keyboard setup stuff.
 	CorsairPerformProtocolHandshake();
 	if (const auto error = CorsairGetLastError()) {
 		std::cerr << "Protocol Handshake failed: " << errorString(error) << std::endl;
@@ -200,6 +256,7 @@ int main(int argc, char *argv[])
 	_getch();
 
 	std::cout << "Playing effect...\nPress Escape to stop playback\n";
+
 	system("pause");
 	return 0;
 }
