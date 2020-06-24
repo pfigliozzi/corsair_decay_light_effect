@@ -149,18 +149,31 @@ int getKeyboardWidth(const CorsairLedPositions &positions)
 			keyboardSize = x;
 		}
 	}
-
+	
 	return keyboardSize;
+}
+
+CorsairLedPosition getLedPositionFromLedId(CorsairLedId ledId, int deviceIndex)
+{
+	int pLedIndex;
+	auto mapping = CorsairGetLedPositionsByDeviceIndex(deviceIndex); // Returns a dictionary (structure?) where LedIds can lookup Positions.
+	for (int i = 0; i < mapping->numberOfLed; ++i) {
+		if (ledId == mapping->pLedPosition[i].ledId) {
+			pLedIndex = i;
+		}
+
+	}
+	return mapping->pLedPosition[pLedIndex];
 }
 
 // The actual function that will change the color of the Led.
 void changeKeyboardLed(char character, int deviceIndex)
 {
-	auto ledId = CorsairGetLedIdForKeyName(character);
+	CorsairLedId ledId = CorsairGetLedIdForKeyName(character);
 	auto solidColor = CUELFXCreateSolidColorEffect({ 50, 150, 200 });
 	std::vector<CorsairLedPosition> leds;
-	auto mapping = CorsairGetLedPositionsByDeviceIndex(deviceIndex); // Returns a dictionary (structure?) where LedIds can lookup Positions.
-	leds.push_back(mapping->pLedPosition[ledId]);
+	auto ledPosition = getLedPositionFromLedId(ledId, deviceIndex);
+	leds.push_back(ledPosition);
 	CUELFXAssignEffectToLeds(solidColor->effectId, deviceIndex, 1, leds.data());
 	auto solidColorId = CorsairLayersPlayEffect(solidColor, 1);
 
